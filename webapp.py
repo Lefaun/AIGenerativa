@@ -1,35 +1,36 @@
+import streamlit as st
 import torch
-from diffusers import DPMSolverMultistepScheduler
-
-modelo.scheduler = DPMSolverMultistepScheduler.from_config(modelo.scheduler.config)
-
-
+from diffusers import AutoPipelineForText2Image, DPMSolverMultistepScheduler
 
 @st.cache_resource
 def carregar_modelo():
-    return AutoPipelineForText2Image.from_pretrained(
+    modelo = AutoPipelineForText2Image.from_pretrained(
         "stabilityai/stable-diffusion-xl-base-1.0",
-        torch_dtype=torch.float16,  # Use half precision
+        torch_dtype=torch.float16,
         variant="fp16",
         use_safetensors=True
-    ).to("cuda")  # Ensure GPU usage
-    
-    imagem = modelo(
-    prompt=prompt, 
-    num_inference_steps=20,  # Reduce from default 50
-    guidance_scale=7.5
-)
-    return imagem
+    ).to("cuda")
+    modelo.scheduler = DPMSolverMultistepScheduler.from_config(modelo.scheduler.config)
+    return modelo
+
+def gerar_imagem(modelo, prompt):
+    return modelo(
+        prompt=prompt, 
+        num_inference_steps=20,
+        guidance_scale=7.5
+    ).images[0]
 
 def main():
-    st.title("🎨 Gerador de Imagens")
-    prompt = st.text_input("Digite sua descrição em português:")
+    st.title("🚀 Gerador Rápido de Imagens")
+    modelo = carregar_modelo()
     
-    if st.button("Gerar Imagem"):
-        imagem = gerar_imagem(prompt)
-        st.image(imagem)
-        imagem.save("imagem_gerada.png")
-        st.download_button("Baixar Imagem", data=open("imagem_gerada.png", "rb"))
+    prompt = st.text_input("Descrição da imagem:")
+    if st.button("Gerar Rápido"):
+        try:
+            imagem = gerar_imagem(modelo, prompt)
+            st.image(imagem)
+        except Exception as e:
+            st.error(f"Erro: {e}")
 
 if __name__ == "__main__":
     main()
