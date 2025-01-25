@@ -4,3 +4,4 @@ diffusers
 huggingface_hub
 Pillow
 transformers
+accelerate
