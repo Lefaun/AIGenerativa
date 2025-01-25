@@ -3,3 +3,4 @@ torch
 diffusers
 huggingface_hub
 Pillow
+transformers
