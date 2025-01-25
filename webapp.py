@@ -14,7 +14,11 @@ def carregar_modelo():
         use_safetensors=True
     ).to("cuda")  # Ensure GPU usage
     
-    imagem = modelo(prompt=prompt).images[0]
+    imagem = modelo(
+    prompt=prompt, 
+    num_inference_steps=20,  # Reduce from default 50
+    guidance_scale=7.5
+)
     return imagem
 
 def main():
