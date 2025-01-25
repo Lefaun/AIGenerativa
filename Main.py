@@ -2,7 +2,6 @@ import streamlit as st
 import torch
 from diffusers import StableDiffusionPipeline
 
-
 st.title("Gerador de Imagens com Stable Diffusion")
 
 # Carregar o modelo Stable Diffusion
@@ -15,12 +14,15 @@ def gerar_imagem(descricao, num_imagens=1):
     imagens = pipe(descricao, num_images=num_imagens).images
     return imagens
 
-# Exemplo de uso
-if __name__ == "__main__":
-    descricao = st.text_input("Um castelo mágico em uma floresta encantada")
-    imagens_geradas = gerar_imagem(descricao)
+# Interface do usuário
+descricao = st.text_input("Descreva a imagem que você deseja gerar:")
+if st.button("Gerar Imagem"):
+    if descricao:
+        imagens_geradas = gerar_imagem(descricao)
 
-    # Salvar e mostrar as imagens geradas
-    for i, img in enumerate(imagens_geradas):
-        img.save(f"imagem_gerada_{i}.png")
-        st.image=img.show()
+        # Salvar e mostrar as imagens geradas
+        for i, img in enumerate(imagens_geradas):
+            img.save(f"imagem_gerada_{i}.png")
+            st.image(img, caption=f"Imagem gerada {i+1}", use_column_width=True)
+    else:
+        st.warning("Por favor, insira uma descrição para gerar a imagem.")
