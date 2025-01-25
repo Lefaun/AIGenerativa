@@ -5,3 +5,6 @@ huggingface_hub
 Pillow
 transformers
 accelerate
+streamlit
+torch
+diffusers
