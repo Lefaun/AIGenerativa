@@ -1,4 +1,4 @@
-streamlit==1.15.2 
-torch==1.12.1+cu113 
-diffusers==0.10.2 
-Pillow==9.3.0
+streamlit
+torch
+diffusers
+Pillow
