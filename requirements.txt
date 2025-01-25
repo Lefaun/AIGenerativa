@@ -1,9 +1,6 @@
 streamlit
-Cuda
-Pytorch
-Diffusers
-Transformers
-Torch
-StableDiffusionPipeline
-Torchvision 
-Torchaudio 
+torch
+torchvision
+torchaudio
+transformers
+diffusers
