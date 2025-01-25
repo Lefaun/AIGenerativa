@@ -7,7 +7,6 @@ st.title("Gerador de Imagens com Stable Diffusion")
 # Carregar o modelo Stable Diffusion
 model_id = "CompVis/stable-diffusion-v1-4"  # Você pode usar outros modelos disponíveis
 pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16, low_cpu_mem_usage=True)
-# pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
 pipe = pipe.to("cuda")  # Mova o modelo para a GPU, se disponível
 
 def gerar_imagem(descricao, num_imagens=1):
