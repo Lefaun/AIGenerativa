@@ -1,11 +1,14 @@
-import streamlit as st
 import torch
-from diffusers import StableDiffusionXLPipeline
+from diffusers import AutoPipelineForText2Image
 
-def gerar_imagem(prompt):
-    modelo = StableDiffusionXLPipeline.from_pretrained(
-        "stabilityai/stable-diffusion-xl-base-1.0"
-    ).to("cuda" if torch.cuda.is_available() else "cpu")
+@st.cache_resource
+def carregar_modelo():
+    return AutoPipelineForText2Image.from_pretrained(
+        "stabilityai/stable-diffusion-xl-base-1.0",
+        torch_dtype=torch.float16,  # Use half precision
+        variant="fp16",
+        use_safetensors=True
+    ).to("cuda")  # Ensure GPU usage
     
     imagem = modelo(prompt=prompt).images[0]
     return imagem
