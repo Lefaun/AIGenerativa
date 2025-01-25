@@ -1,5 +1,9 @@
 import torch
-from diffusers import AutoPipelineForText2Image
+from diffusers import DPMSolverMultistepScheduler
+
+modelo.scheduler = DPMSolverMultistepScheduler.from_config(modelo.scheduler.config)
+
+
 
 @st.cache_resource
 def carregar_modelo():
