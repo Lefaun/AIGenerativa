@@ -5,12 +5,19 @@ from diffusers import AutoPipelineForText2Image, DPMSolverMultistepScheduler
 @st.cache_resource
 def carregar_modelo():
     try:
-        modelo = AutoPipelineForText2Image.from_pretrained(
-            "stabilityai/stable-diffusion-xl-base-1.0",
-            torch_dtype=torch.float16,
-            variant="fp16",
-            use_safetensors=True
-        ).to("cuda" if torch.cuda.is_available() else "cpu")
+        if torch.cuda.is_available():
+            modelo = AutoPipelineForText2Image.from_pretrained(
+                "stabilityai/stable-diffusion-xl-base-1.0",
+                torch_dtype=torch.float16,
+                variant="fp16",
+                use_safetensors=True
+            ).to("cuda")
+        else:
+            modelo = AutoPipelineForText2Image.from_pretrained(
+                "stabilityai/stable-diffusion-xl-base-1.0",
+                use_safetensors=True
+            ).to("cpu")
+        
         modelo.scheduler = DPMSolverMultistepScheduler.from_config(modelo.scheduler.config)
         return modelo
     except Exception as e:
